@@ -273,8 +273,11 @@ class GenericDataset(data.Dataset):
       cf = self.opt.shift
       if type(s) == float:
         s = [s, s]
-      c[0] += s * np.clip(np.random.randn()*cf, -2*cf, 2*cf)
-      c[1] += s * np.clip(np.random.randn()*cf, -2*cf, 2*cf)
+        c[0] += s[0] * np.clip(np.random.randn()*cf, -2*cf, 2*cf)
+        c[1] += s[1] * np.clip(np.random.randn()*cf, -2*cf, 2*cf)
+      else:
+        c[0] += s * np.clip(np.random.randn()*cf, -2*cf, 2*cf)
+        c[1] += s * np.clip(np.random.randn()*cf, -2*cf, 2*cf)
       aug_s = np.clip(np.random.randn()*sf + 1, 1 - sf, 1 + sf)
     
     if np.random.random() < self.opt.aug_rot:

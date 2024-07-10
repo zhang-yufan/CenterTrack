@@ -330,7 +330,7 @@ class DLA(nn.Module):
         # self.fc = fc
 
 
-def dla34(pretrained=True, **kwargs):  # DLA-34
+def dla34(pretrained=None, **kwargs):  # DLA-34
     model = DLA([1, 1, 1, 2, 2, 1],
                 [16, 32, 64, 128, 256, 512],
                 block=BasicBlock, **kwargs)

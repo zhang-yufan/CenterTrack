@@ -137,7 +137,8 @@ def test(opt):
   print(opt)
   Logger(opt)
   
-  split = 'val' if not opt.trainval else 'test'
+  # split = 'val' if not opt.trainval else 'test'
+  split='test_small'
   dataset = Dataset(opt, split)
   detector = Detector(opt)
 
