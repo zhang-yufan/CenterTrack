@@ -18,20 +18,28 @@ class myMotData(GenericDataset):
   cat_ids = {1: 1, -1: -1}
   def __init__(self, opt, split):
     self.dataset_version = opt.dataset_version
-    # self.year = int(self.dataset_version[:2])
-    # print('Using MOT {} {}'.format(self.year, self.dataset_version))
     data_dir = os.path.join(opt.data_dir,'myMotData')
-    ann_file = '{}.json'.format('train' if split == 'train' else 'test')
-    # if opt.dataset_version in ['17trainval', '17test']:
-    #   ann_file = '{}.json'.format('train' if split == 'train' else \
-    #     'test')
-    # elif opt.dataset_version == '17halftrain':
-    #   ann_file = '{}.json'.format('train_half')
-    # elif opt.dataset_version == '17halfval':
-    #   ann_file = '{}.json'.format('val_half')
-    img_dir = os.path.join(data_dir, '{}'.format(
-      'train' if split == 'train' else 'test'))
+
+    # ann_file = '{}.json'.format('train' if split == 'train' else 'test')
+    # img_dir = os.path.join(data_dir, '{}'.format(
+    #   'train' if split == 'train' else 'test'))
     
+    if opt.dataset_version in ['trainval', 'test']:
+      ann_file = '{}.json'.format('train' if split == 'train' else \
+        'test')
+    elif opt.dataset_version == 'train':
+      ann_file = '{}.json'.format('val' if split == 'val' else 'train')
+    elif opt.dataset_version == 'halftrain':
+      ann_file = '{}.json'.format('val_half' if split == 'val' else 'train_half')
+    elif opt.dataset_version == 'halfval':
+      ann_file = '{}.json'.format('val_half')
+    elif opt.dataset_version =='val':
+      ann_file = '{}.json'.format('val')
+
+    img_dir = os.path.join(data_dir, '{}'.format(
+      split))
+
+
     print('ann_file', ann_file)
     ann_path = os.path.join(data_dir, 'annotations', ann_file)
 
@@ -87,14 +95,16 @@ class myMotData(GenericDataset):
   
   def run_eval(self, results, save_dir):
     self.save_results(results, save_dir)
-    # gt_type_str = '{}'.format(
-    #             '_train_half' if '17halftrain' in self.opt.dataset_version \
-    #             else '_val_half' if '17halfval' in self.opt.dataset_version \
-    #             else '')
-    # gt_type_str = '_val_half' if self.year in [16, 19] else gt_type_str
-    # gt_type_str = '--gt_type {}'.format(gt_type_str) if gt_type_str != '' else \
-    #   ''
+    # gt_type_str = ''
     # os.system('python tools/eval_motchallenge.py ' + \
-    #           '../data/mot{}/{}/ '.format(self.year, 'train') + \
-    #           '{}/results_mot{}/ '.format(save_dir, self.dataset_version) + \
-    #           gt_type_str + ' --eval_official')
+    #           '../data/myMotData/{}/ '.format('test') + \
+    #           '{}/results_myMotData/ '.format(save_dir))
+    
+    gt_type_str = '{}'.format(
+                '_train_half' if 'halftrain' in self.opt.dataset_version \
+                else '_val_half' if 'halfval' in self.opt.dataset_version \
+                else 'test')
+    gt_type_str = '--gt_type {}'.format(gt_type_str) 
+    os.system('python tools/eval_motchallenge.py ' + \
+              '../data/myMotData/{}/ '.format(self.dataset_version) + \
+              '{}/results_myMotData/ '.format(save_dir))

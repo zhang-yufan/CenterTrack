@@ -9,8 +9,8 @@ import cv2
 DATA_PATH = '../../data/myMotData/'
 OUT_PATH = DATA_PATH + 'annotations/'
 # SPLITS = ['train_half', 'val_half', 'train', 'test']
-# SPLITS = ['train', 'test']
-SPLITS=['test_small']
+# SPLITS = ['train','val', 'test']
+SPLITS=['val']
 HALF_VIDEO = False
 CREATE_SPLITTED_ANN = False
 CREATE_SPLITTED_DET = False

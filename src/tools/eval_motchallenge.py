@@ -74,7 +74,7 @@ if __name__ == '__main__':
     gt_type = args.gt_type
     print('gt_type', gt_type)
     gtfiles = glob.glob(
-      os.path.join(args.groundtruths, '*/gt/gt{}.txt'.format(gt_type)))
+      os.path.join(args.groundtruths, '*/gt/gt.txt'))
     print('gt_files', gtfiles)
     tsfiles = [f for f in glob.glob(os.path.join(args.tests, '*.txt')) if not os.path.basename(f).startswith('eval')]
 
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     logging.info('Loading files.')
     
     gt = OrderedDict([(Path(f).parts[-3], mm.io.loadtxt(f, fmt=args.fmt, min_confidence=-1)) for f in gtfiles])
-    ts = OrderedDict([(os.path.splitext(Path(f).parts[-1])[0], mm.io.loadtxt(f, fmt=args.fmt,min_confidence=0.5)) for f in tsfiles])    
+    ts = OrderedDict([(os.path.splitext(Path(f).parts[-1])[0], mm.io.loadtxt(f, fmt=args.fmt,min_confidence=-1)) for f in tsfiles])    
 
     mh = mm.metrics.create()    
     accs, names = compare_dataframes(gt, ts)
